@@ -1,0 +1,34 @@
+org: carlosescouto
+app: pocs
+service: poc-sls-express
+frameworkVersion: '3'
+
+useDotenv: true
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+  - serverless-dotenv-plugin
+
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: ${env:REGION}
+  environment:
+    NODE_ENV: ${env:NODE_ENV}
+    REGION: ${env:REGION}
+
+
+functions:
+  api:
+    handler: handler.handler
+    events:
+      - httpApi: '*'
+
+package:
+  patterns:
+    - '!node_modules/.prisma/client/libquery_engine-*'
+    - 'node_modules/.prisma/client/libquery_engine-rhel-*'
+    - '!node_modules/prisma/libquery_engine-*'
+    - '!node_modules/@prisma/engines/**'
